@@ -20,12 +20,24 @@ const peopleData = [
   { id: 3, name: 'Budd Deey' },
 ];
 
+let requestCount = 0;
+
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
     people: {
       type: new GraphQLList(PersonType),
-      resolve: () => peopleData,
+      resolve: () => {
+        console.log('network request');
+        requestCount++;
+        if (requestCount > 1) {
+          // since this template does not show queries in the network tab, I've added
+          // this console.error to show the problem.
+          console.error('The same query executed 3 times created 3 network requests' +
+          ' when queryDeduplication was not set to false.');
+        }
+        return peopleData;
+    },
     },
   },
 });
