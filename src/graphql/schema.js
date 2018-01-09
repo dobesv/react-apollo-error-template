@@ -25,7 +25,9 @@ const QueryType = new GraphQLObjectType({
   fields: {
     people: {
       type: new GraphQLList(PersonType),
-      resolve: () => peopleData,
+      resolve: () => {
+        throw new Error('bla');
+      },
     },
   },
 });
